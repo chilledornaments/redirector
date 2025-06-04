@@ -1,0 +1,21 @@
+config:
+  enabled: true
+  configMapName: redirector-config
+
+service:
+  enabled: true
+
+deploy:
+  resources:
+    requests:
+      cpu: '100M'
+      memory: '100M'
+    limits:
+      cpu: '100M'
+      memory: '100M'
+  image: 'chilledornaments/redirector:latest'
+  imagePullPolicy: IfNotPresent
+  extraLabels: {}
+  extraEnv:
+    - name: DEBUG_LOGS
+      value: 'true'

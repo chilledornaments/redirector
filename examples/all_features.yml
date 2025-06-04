@@ -1,0 +1,35 @@
+location_on_miss: 'https://www.nps.gov/articles/prairie-dogs.htm'
+status_on_miss: 307
+
+listen_address: '0.0.0.0:1234'
+metrics_server_listen_address: '0.0.0.0:9999'
+cache_control_max_age: 180
+
+cache:
+  ttl: 300
+  cleanup_interval: 60
+
+
+rules:
+  - from: 'foo.com/*'
+    to: 'https://bar.com/hello/world'
+    code: 302
+  - from: 'foo.com/hello'
+    to: 'https://bar.com/hello/world' # will send 301 by default
+  - from: 'example.com/test/(?<CAPTURE>\w+)/(?<GROUP2>\w+)'
+    to: 'https://foo.com/bar/$GROUP2/$CAPTURE'
+    cache_control_max_age: 86400
+  - from: 'localhost/blog/[[:digit:]]{4}/[[:digit:]]{2}/[[:digit:]]{2}/(.+)'
+    to: 'https://blog.localhost.com/posts/$1'
+    # Don't send Cache-Control header at all
+    cache_control_max_age: -1
+    parameters:
+      strategy: 'merge'
+      values:
+        hello: [ 'world' ]
+        foo: [ 'bar' ]
+        whiz: [ 'bang', 'test' ]
+
+
+
+

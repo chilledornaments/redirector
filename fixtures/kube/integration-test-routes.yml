@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  name: redirector
+  namespace: test
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: routeme.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: redirector
+                port:
+                  number: 8484
+            path: /
+            pathType: Prefix

@@ -1,0 +1,22 @@
+name: Release
+on:
+  release:
+    types: [published]
+
+
+jobs:
+  publish-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image to Docker Hub
+        run: |
+          docker build . \
+          --tag ${{env.DOCKER_TAG}}:${{github.sha}} \
+          --tag ${{env.DOCKER_TAG}}:${{github.event.release.tag_name}}

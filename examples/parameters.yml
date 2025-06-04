@@ -1,0 +1,20 @@
+cache_control_max_age: 60
+
+rules:
+  - from: 'example.com'
+    to: 'https://foo.com/hello'
+    code: 308
+    parameters:
+      strategy: 'merge'
+      values:
+        hello: ['world']
+        foo: ['bar']
+        whiz: ['bang', 'test']
+  - from: 'example.com/xyz'
+    to: 'https://foo.com/hello'
+    parameters:
+      strategy: 'replace'
+      values:
+        hello: ['world']
+        foo: ['bar']
+        whiz: ['bang']

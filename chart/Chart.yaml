@@ -1,0 +1,8 @@
+apiVersion: v2
+name: redirector
+version: 0.0.1
+description: Manage your HTTP redirects declaratively
+keywords:
+  - redirect
+  - kubernetes
+home: https://github.com/chilledornaments/redirector

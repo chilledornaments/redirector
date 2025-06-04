@@ -1,0 +1,15 @@
+# How to contribute
+
+I'm always interested in making Redirector more useful.
+
+## Testing
+
+Please write a test for any functionality you introduce.
+
+If you're making changes to core logic or functionality, please add an integration test.
+
+## Submitting changes
+
+Please send a PR to Redirector with a clear list of what you've done.
+
+Always write a clear message for your commits. Pull requests descriptions should include a brief description of the changes. Please link to any relevant issues or other PRs.

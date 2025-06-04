@@ -1,0 +1,70 @@
+location_on_miss: 'https://www.nps.gov/articles/prairie-dogs.htm'
+
+listen_address: '0.0.0.0:8484'
+metrics_server_listen_address: '0.0.0.0:8485'
+cache_control_max_age: 60
+
+cache:
+  ttl: 3
+  cleanup_interval: 1
+
+
+default_parameters: &default-params
+  strategy: 'replace'
+  values:
+  new: ['hello']
+
+rules:
+  - from: 'example.com/test/(?<CAPTURE>\w+)/(?<GROUP2>\w+)'
+    to: 'https://foo.com/bar/$GROUP2/$CAPTURE'
+    code: 302
+  - from: 'example.com/test/longest/superseded-by-above'
+    to: 'https://foo.com/bar/'
+  - from: 'example.com/test/foo'
+    to: 'https://foo.com/destination/d'
+  - from: 'localhost/foo'
+    to: 'https://example.com'
+  - from: 'localhost/blog/[[:digit:]]{4}/[[:digit:]]{2}/[[:digit:]]{2}/(.+)'
+    to: 'https://blog.localhost.com/posts/$1'
+    cache_control_max_age: 3
+    # rewrite e.g. `/blog/2025/05/21/foo/bar to blog.com/posts/foo/bar
+  - from: 'localhost/params/test$'
+    to: 'https://demo.localhost.com/'
+    parameters:
+      strategy: 'combine'
+      values:
+        new: ["hello"]
+        existing: ["world"]
+  - from: 'localhost/params/test2'
+    to: 'https://demo.localhost.com/'
+    cache_control_max_age: -1
+    parameters:
+      strategy: 'replace'
+      values:
+        new: [ "hello" ]
+  - from: 'localhost:8484/params/test2'
+    to: 'https://demo.localhost.com/'
+    parameters:
+      *default-params
+  - from: 'localhost/port'
+    to: 'https://demo.localhost.com:8080/foo'
+
+  - from: 'localhost/param-in-directive-empty'
+    to: 'http://foo?param=indirective'
+    parameters:
+      values: {}
+
+  - from: 'localhost/empty-param'
+    to: 'http://foo'
+    parameters:
+      values: {}
+
+  - from: 'localhost/param-in-directive$'
+    to: 'http://foo?param=indirective'
+
+  - from: 'localhost/param-in-directive-with-parameters-set'
+    to: 'http://foo?param=indirective'
+    parameters:
+      strategy: 'replace'
+      values:
+        foo: ['bar']

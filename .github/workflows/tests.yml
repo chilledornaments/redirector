@@ -1,0 +1,90 @@
+name: Test suite
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  DOCKER_TAG: chilledornaments/redirector
+
+jobs:
+  test-suite:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '^1.24'
+
+      - name: Vet
+        run: |
+          go vet -race
+
+      - name: Unit tests
+        run: |
+          go test -v --tags unit_test ./...
+
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build with Docker
+        run: |
+          docker build . --tag ${{env.DOCKER_TAG}}:${{github.sha}}
+
+      - name: Setup minikube
+        run: |
+          curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+          
+          minikube addons enable ingress
+          
+          minikube image load ${{env.DOCKER_TAG}}:${{github.sha}}
+
+      - name: Generate ingress definition
+        id: generate
+        run: |
+          docker run \
+          -v $PWD:/var/tmp/ \
+          -e CONFIG_PATH=/var/tmp/fixtures/rules.yml \
+          -w /var/tmp \
+          ${{env.DOCKER_TAG}}:${{github.sha}} /app generate -out test-ingress.yml
+          
+          echo "ingress_manifest=test-ingress.yml" >> $GITHUB_OUTPUT
+
+      - name: Install helm
+        uses: azure/setup-helm@v4.3.0
+
+      - name: Create Kubernetes resources
+        run: |
+          NAMESPACE=test-${{github.sha}}
+          
+          helm upgrade --install \
+          redirector-test ./chart/ \
+          --namespace $NAMESPACE \
+          --create-namespace \
+          --values ./fixtures/kube/values-kube-test.yml  \
+          --set config.encodedFileContents=$(cat ./fixtures/rules.yml | base64)
+          --set deploy.image=${{ env.DOCKER_TAG }}:${{ github.sha }}
+          
+          kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }} 
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Kubernetes integration tests
+        run: |
+          pip install -r tests/integration/requirements.txt
+          
+          URL_HOST=$(minikube ip) pytest -v -s tests/integration/
+
+      - name: Load tests
+        run: |
+          go test -v --tags load_test ./...

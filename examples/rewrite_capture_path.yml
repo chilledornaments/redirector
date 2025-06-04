@@ -1,0 +1,12 @@
+cache_control_max_age: 60
+
+rules:
+  - from: 'example.com/test/(?<CAPTURE>\w+)/(?<GROUP2>\w+)'
+    to: 'https://foo.com/bar/$GROUP2/$CAPTURE'
+    code: 302
+  - from: 'example.com/test/longest/path'
+    to: 'https://foo.com/bar/'
+  - from: 'example.com/test/longest/second'
+    to: 'https://foo.com/bar/'
+  - from: 'example.com/test/foo'
+    to: 'https://foo.com/destination/d'

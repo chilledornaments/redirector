@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: redirector
+
+spec:
+  #  externalTrafficPolicy: Cluster
+  ports:
+    - targetPort: 8484
+      protocol: TCP
+      port: 8484
+  selector:
+    app: redirector
+    {{if .Values.deploy.extraLabels }}{{ toYaml .Values.deploy.extraLabels }}{{end}}

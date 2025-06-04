@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: redirector
+  namespace: {{ .Release.Namespace }}
+
+spec:
+  template:
+    metadata:
+      labels:
+        app: redirector
+        {{if .Values.deploy.extraLabels }}{{ toYaml .Values.deploy.extraLabels }}{{end}}
+    spec:
+      containers:
+        - name: redirector
+          image: {{ .Values.deploy.image }}
+          imagePullPolicy: {{.Values.deploy.imagePullPolicy }}
+          volumeMounts:
+            - mountPath: /tmp/config
+              name: config-volume
+          env:
+            - name: CONFIG_PATH
+              value: /tmp/config/config.yml
+            {{ range .Values.deploy.extraEnv -}}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{ end }}
+          startupProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 1
+            timeoutSeconds: 1
+            httpGet:
+              port: 8484
+              path: /status
+          readinessProbe:
+            periodSeconds: 5
+            successThreshold: 2
+            failureThreshold: 3
+            initialDelaySeconds: 1
+            timeoutSeconds: 1
+            httpGet:
+              port: 8484
+              path: /status
+
+      resources:
+          requests:
+            cpu: {{.Values.deploy.resources.requests.cpu}}
+            memory: {{.Values.deploy.resources.requests.memory}}
+          limits:
+            cpu: {{.Values.deploy.resources.limits.cpu}}
+            memory: {{.Values.deploy.resources.limits.memory}}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.config.configMapName }}
+            items:
+              - key: config.yml
+                path: "config.yml"
+
+  selector:
+    matchLabels:
+      app: redirector
+      {{if .Values.deploy.extraLabels }}{{ toYaml .Values.deploy.extraLabels }}{{end}}
