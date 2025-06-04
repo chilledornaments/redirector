@@ -54,11 +54,7 @@ jobs:
       - name: Generate ingress definition
         id: generate
         run: |
-          docker run \
-          -v $PWD:/var/tmp/ \
-          -e CONFIG_PATH=/var/tmp/fixtures/rules.yml \
-          -w /var/tmp \
-          ${{env.DOCKER_TAG}}:${{github.sha}} /app generate -out test-ingress.yml
+          go run -v ./... generate -out test.ingress.yml
           
           echo "ingress_manifest=test-ingress.yml" >> $GITHUB_OUTPUT
 
