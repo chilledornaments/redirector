@@ -54,7 +54,7 @@ jobs:
       - name: Generate ingress definition
         id: generate
         run: |
-          go run -v ./... generate -out test.ingress.yml
+          CONFIG_PATH=./fixtures/rules.yml go run -v ./... generate -out test.ingress.yml
           
           echo "ingress_manifest=test-ingress.yml" >> $GITHUB_OUTPUT
 
