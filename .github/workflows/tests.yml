@@ -84,7 +84,7 @@ jobs:
 
       - name: Create Kubernetes resources
         run: |
-          helm upgrade --install redirector-test ./charts/ \
+          helm upgrade --install redirector-test ./charts/redirector/ \
           --namespace ${{steps.generate.outputs.kube_namespace}} \
           --create-namespace \
           --values ./fixtures/kube/values-kube-test.yml \
