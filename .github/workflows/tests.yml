@@ -93,8 +93,6 @@ jobs:
   
           kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }}
           
-          kubectl get events --sort-by='.lastTimestamp' -A
-
       - name: Setup python
         uses: actions/setup-python@v5
         with:
@@ -114,6 +112,19 @@ jobs:
       - name: Get Redirector logs
         if: always()
         run: |
-          kubectl -n ${{steps.generate.outputs.kube_namespace}} logs deploy/redirector
           
+          echo "::group::Redirector logs"
+          kubectl -n ${{steps.generate.outputs.kube_namespace}} logs deploy/redirector
+          echo "::endgroup::"
+          
+          echo "::group::Redirector deployment"
+          kubectl-n ${{steps.generate.outputs.kube_namespace}} describe deploy
+          echo "::endgroup::"
+          
+          echo "::group::NGINX logs"
           kubectl -n ingress-nginx logs deploy/ingress-nginx-controller
+          echo "::endgroup::"
+          
+          echo "::group::Kube events"
+          kubectl get events --sort-by='.lastTimestamp' -A
+          echo "::endgroup::"
