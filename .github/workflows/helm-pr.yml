@@ -59,4 +59,4 @@ jobs:
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct install --target-branch ${{ github.event.repository.default_branch }} --helm-extra-set-args deploy.image=${{env.CONTAINER_REPOSITORY}}:latest
+        run: ct install --target-branch ${{ github.event.repository.default_branch }} --helm-extra-set-args "--set=deploy.image=${{env.CONTAINER_REPOSITORY}}:latest"
