@@ -13,7 +13,7 @@ env:
   DOCKER_TAG: chilledornaments/redirector
 
 jobs:
-  test-suite:
+  unit-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,11 +33,23 @@ jobs:
         run: |
           go test -v --tags unit_test ./...
 
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '^1.24'
+
       - name: start minikube
         uses: medyagh/setup-minikube@5e71d7574bcbd0a3b04e7263b9cc4b47e2645bfb
         id: minikube
         with:
-          cache: false
+          cache: true
           minikube-version: 1.36.0
           driver: docker
           container-runtime: containerd
@@ -45,7 +57,6 @@ jobs:
           cni: bridge
           addons: registry,ingress
           extra-config: 'kubelet.max-pods=10'
-          feature-gates: 'DownwardAPIHugePages=true'
           wait: false
 
       - name: Setup buildx
@@ -54,9 +65,7 @@ jobs:
       - name: Build with Docker
         run: |
           docker build . --tag ${{env.DOCKER_TAG}}:${{github.sha}}
-
-      - name: Setup minikube
-        run: |          
+          
           minikube image load ${{env.DOCKER_TAG}}:${{github.sha}}
 
       - name: Generate ingress definition
