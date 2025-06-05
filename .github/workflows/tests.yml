@@ -92,6 +92,8 @@ jobs:
           
   
           kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }}
+          
+          k get events --sort-by='.lastTimestamp' -A
 
       - name: Setup python
         uses: actions/setup-python@v5
@@ -113,3 +115,5 @@ jobs:
         if: always()
         run: |
           kubectl -n ${{steps.generate.outputs.kube_namespace}} logs deploy/redirector
+          
+          kubectl -n ingress-nginx logs deploy/ingress-nginx-controller
