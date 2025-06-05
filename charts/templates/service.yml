@@ -1,0 +1,18 @@
+{{ if .Values.service.enabled }}
+kind: Service
+apiVersion: v1
+
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: redirector
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - targetPort: {{ .Values.deploy.port }}
+      protocol: TCP
+      port: 8484
+  selector:
+    app: redirector
+    {{if .Values.deploy.extraLabels }}{{ toYaml .Values.deploy.extraLabels }}{{end}}
+  {{ end }}

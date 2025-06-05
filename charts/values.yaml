@@ -4,8 +4,10 @@ config:
 
 service:
   enabled: true
+  type: ClusterIP
 
 deploy:
+  replicas: 1
   resources:
     requests:
       cpu: '100M'
@@ -15,5 +17,6 @@ deploy:
       memory: '100M'
   image: 'chilledornaments/redirector:latest'
   imagePullPolicy: IfNotPresent
+  port: 8484
   extraLabels: {}
   extraEnv: []

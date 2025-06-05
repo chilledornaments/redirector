@@ -8,7 +8,7 @@ import urllib3.util
 
 URL_HOST=os.environ.get("URL_HOST", "localhost")
 
-@pytest.mark.skipif(os.environ.get("SKIP_KUBERNETES_INTEGRATION_TESTS"), "SKIP_KUBERNETES_INTEGRATION_TESTS set in environment")
+@pytest.mark.skipif(os.environ.get("SKIP_KUBERNETES_INTEGRATION_TESTS"), reason="SKIP_KUBERNETES_INTEGRATION_TESTS set in environment")
 def test_nonexistent_route():
     # no matching ingress rule, so expect a 404
     headers = {

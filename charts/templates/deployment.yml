@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 
 spec:
+  replicas: {{ .Values.deploy.replicas }}
   template:
     metadata:
       labels:
@@ -31,17 +32,20 @@ spec:
             initialDelaySeconds: 1
             timeoutSeconds: 1
             httpGet:
-              port: 8484
+              port: {{ .Values.deploy.port }}
               path: /status
           readinessProbe:
             periodSeconds: 5
-            successThreshold: 2
+            successThreshold: 1
             failureThreshold: 3
             initialDelaySeconds: 1
             timeoutSeconds: 1
             httpGet:
-              port: 8484
+              port: {{ .Values.deploy.port }}
               path: /status
+          ports:
+            - containerPort: {{ .Values.deploy.port }}
+
 
       resources:
           requests:
