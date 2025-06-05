@@ -10,7 +10,7 @@ on:
       - .github/workflows/**
 
 env:
-  DOCKER_TAG: chilledornaments/redirector
+  CONTAINER_REPOSITORY: chilledornaments/redirector
 
 jobs:
   unit-tests:
@@ -64,9 +64,10 @@ jobs:
 
       - name: Build with Docker
         run: |
-          docker build . --tag ${{env.DOCKER_TAG}}:${{github.sha}}
+          docker build . --tag ${{env.CONTAINER_REPOSITORY}}:${{github.sha}}
           
-          minikube image load ${{env.DOCKER_TAG}}:${{github.sha}}
+          echo "loading image into minikube"
+          minikube image load ${{env.CONTAINER_REPOSITORY}}:${{github.sha}}
 
       - name: Generate ingress definition
         id: generate
@@ -88,8 +89,7 @@ jobs:
           --create-namespace \
           --values ./fixtures/kube/values-kube-test.yml \
           --set config.encodedFileContents="$(cat ./fixtures/rules.yml | base64)" \
-          --set deploy.image=chilledornaments/redirector:466a1dd6240bcf77154e83a274d397801a6bc5e5
-          
+          --set deploy.image=${{env.CONTAINER_REPOSITORY}}:${{github.sha}}
   
           kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }}
           
