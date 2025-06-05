@@ -90,7 +90,7 @@ jobs:
           --values ./fixtures/kube/values-kube-test.yml \
           --set config.encodedFileContents="$(cat ./fixtures/rules.yml | base64)" \
           --set deploy.image=${{env.CONTAINER_REPOSITORY}}:${{github.sha}} \
-          --wait --timeout 30
+          --wait --timeout 30s
   
           kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }}
 
