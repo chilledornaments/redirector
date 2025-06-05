@@ -54,7 +54,7 @@ jobs:
       - name: Generate ingress definition
         id: generate
         run: |
-          CONFIG_PATH=./fixtures/rules.yml go run -v ./... generate -out test.ingress.yml
+          CONFIG_PATH=./fixtures/rules.yml go run -v ./... generate -out test-ingress.yml
           
           echo "ingress_manifest=test-ingress.yml" >> $GITHUB_OUTPUT
 
@@ -70,7 +70,7 @@ jobs:
           --namespace $NAMESPACE \
           --create-namespace \
           --values ./fixtures/kube/values-kube-test.yml  \
-          --set config.encodedFileContents=$(cat ./fixtures/rules.yml | base64)
+          --set config.encodedFileContents=$(cat ./fixtures/rules.yml | base64) \
           --set deploy.image=${{ env.DOCKER_TAG }}:${{ github.sha }}
           
           kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }} 
