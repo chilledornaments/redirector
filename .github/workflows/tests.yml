@@ -10,7 +10,7 @@ on:
       - .github/workflows/tests.yml
 
 env:
-  CONTAINER_REPOSITORY: chilledornaments/redirector
+  CONTAINER_REPOSITORY: ghcr.io/chilledornaments/redirector
 
 jobs:
   unit-tests:
