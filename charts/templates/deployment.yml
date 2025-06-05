@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 
 spec:
+  replicas: {{ .Values.deploy.replicas }}
   template:
     metadata:
       labels:

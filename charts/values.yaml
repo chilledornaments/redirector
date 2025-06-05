@@ -6,6 +6,7 @@ service:
   enabled: true
 
 deploy:
+  replicas: 1
   resources:
     requests:
       cpu: '100M'
