@@ -108,3 +108,8 @@ jobs:
       - name: Load tests
         run: |
           go test -v --tags load_test ./...
+
+      - name: Get Redirector logs
+        if: always()
+        run: |
+          kubectl -n ${{steps.generate.outputs.kube_namespace}} logs deploy/redirector
