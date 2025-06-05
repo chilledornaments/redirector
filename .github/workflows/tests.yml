@@ -118,7 +118,7 @@ jobs:
           echo "::endgroup::"
           
           echo "::group::Redirector deployment"
-          kubectl-n ${{steps.generate.outputs.kube_namespace}} describe deploy
+          kubectl -n ${{steps.generate.outputs.kube_namespace}} describe deploy
           echo "::endgroup::"
           
           echo "::group::NGINX logs"
