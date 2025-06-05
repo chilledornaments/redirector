@@ -63,17 +63,17 @@ jobs:
 
       - name: Create Kubernetes resources
         run: |
-          NAMESPACE=test-${{github.sha}}
+          NAMESPACE=test
           
-          helm upgrade --install \
-          redirector-test ./chart/ \
-          --namespace $NAMESPACE \
+          helm upgrade --install redirector-test ./charts/ \
+          --namespace "$NAMESPACE" \
           --create-namespace \
-          --values ./fixtures/kube/values-kube-test.yml  \
-          --set config.encodedFileContents=$(cat ./fixtures/rules.yml | base64) \
-          --set deploy.image=${{ env.DOCKER_TAG }}:${{ github.sha }}
+          --values ./fixtures/kube/values-kube-test.yml \
+          --set config.encodedFileContents="$(cat ./fixtures/rules.yml | base64)" \
+          --set deploy.image=chilledornaments/redirector:466a1dd6240bcf77154e83a274d397801a6bc5e5
           
-          kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }} 
+  
+          kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }}
 
       - name: Setup python
         uses: actions/setup-python@v5
