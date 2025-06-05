@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   redirector:
   - apiVersion: v2
+    created: "2025-06-05T13:10:39.979086435Z"
+    description: Manage your HTTP redirects declaratively
+    digest: a7b87a640c6777e8ad844add9c2b49178ba7e866bc571204071a78f8430d74fe
+    home: https://github.com/chilledornaments/redirector
+    keywords:
+    - redirect
+    - kubernetes
+    maintainers:
+    - name: Mitchell
+    name: redirector
+    urls:
+    - https://github.com/chilledornaments/redirector/releases/download/redirector-0.0.2/redirector-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2025-06-05T03:01:38.109016189Z"
     description: Manage your HTTP redirects declaratively
     digest: 60175fa953bb3f9f7fd50537e707b9574f735e19e0594595921081ff9282bfdc
@@ -15,4 +29,4 @@ entries:
     urls:
     - https://github.com/chilledornaments/redirector/releases/download/redirector-0.0.1/redirector-0.0.1.tgz
     version: 0.0.1
-generated: "2025-06-05T03:01:38.10902183Z"
+generated: "2025-06-05T13:10:39.979093909Z"
