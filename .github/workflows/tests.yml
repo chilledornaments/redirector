@@ -89,10 +89,11 @@ jobs:
           --create-namespace \
           --values ./fixtures/kube/values-kube-test.yml \
           --set config.encodedFileContents="$(cat ./fixtures/rules.yml | base64)" \
-          --set deploy.image=${{env.CONTAINER_REPOSITORY}}:${{github.sha}}
+          --set deploy.image=${{env.CONTAINER_REPOSITORY}}:${{github.sha}} \
+          --wait --timeout 30
   
           kubectl apply -f ${{ steps.generate.outputs.ingress_manifest }}
-          
+
       - name: Setup python
         uses: actions/setup-python@v5
         with:
