@@ -7,7 +7,7 @@ on:
     paths:
       - '*.go'
       - './fixtures/**'
-      - .github/workflows/**
+      - .github/workflows/tests.yml
 
 env:
   CONTAINER_REPOSITORY: chilledornaments/redirector
