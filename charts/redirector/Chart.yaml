@@ -1,6 +1,6 @@
 apiVersion: v2
 name: redirector
-version: 0.0.2
+version: 0.0.3
 description: Manage your HTTP redirects declaratively
 keywords:
   - redirect
