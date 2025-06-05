@@ -63,13 +63,10 @@ In order to avoid finding a match for every request, Redirector stores matches i
 
 Redirector is intended to be used with and tested against the [ingress nginx controller](https://github.com/kubernetes/ingress-nginx). 
 
-Redirector needs a deployment, a service, and an ingress. You can deploy with Helm by running:
+Redirector needs a deployment, a service, and an ingress. See the [README in the charts directory](./charts/README.md) for more information.
 
-```shell
-TODO document this
-```
-
-Please note that when deploying with Helm, the chart expects the contents of the configuration file to be provided as a base64 encoded string. The chart will decode these into a ConfigMap. Alternatively, you can disable the ConfigMap creation entirely and create the ConfigMap yourself.
+Please note that when deploying with Helm, the chart expects the contents of the configuration file to be provided as a base64 encoded string.
+The chart will decode these into a ConfigMap. Alternatively, you can disable the ConfigMap creation entirely and create the ConfigMap yourself.
 
 
 ### Ingress generation
