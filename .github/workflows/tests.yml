@@ -56,7 +56,7 @@ jobs:
           kubernetes-version: v1.31.0
           cni: bridge
           addons: registry,ingress
-          extra-config: 'kubelet.max-pods=10'
+          extra-config: 'kubelet.max-pods=15'
           wait: false
 
       - name: Setup buildx
