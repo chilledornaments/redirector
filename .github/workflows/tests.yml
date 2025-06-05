@@ -53,20 +53,21 @@ jobs:
 
       - name: Generate ingress definition
         id: generate
+        env:
+          KUBE_NAMESPACE: test
         run: |
-          CONFIG_PATH=./fixtures/rules.yml go run -v ./... generate -out test-ingress.yml
+          CONFIG_PATH=./fixtures/rules.yml go run -v ./... generate -out test-ingress.yml -namespace ${{env.KUBE_NAMESPACE}}
           
           echo "ingress_manifest=test-ingress.yml" >> $GITHUB_OUTPUT
+          echo "kube_namespace=${{env.KUBE_NAMESPACE}}" >> $GITHUB_OUTPUT
 
       - name: Install helm
         uses: azure/setup-helm@v4.3.0
 
       - name: Create Kubernetes resources
         run: |
-          NAMESPACE=test
-          
           helm upgrade --install redirector-test ./charts/ \
-          --namespace "$NAMESPACE" \
+          --namespace ${{steps.generate.outputs.kube_namespace}} \
           --create-namespace \
           --values ./fixtures/kube/values-kube-test.yml \
           --set config.encodedFileContents="$(cat ./fixtures/rules.yml | base64)" \
