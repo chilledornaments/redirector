@@ -6,3 +6,5 @@ keywords:
   - redirect
   - kubernetes
 home: https://github.com/chilledornaments/redirector
+maintainers:
+  - name: Mitchell
