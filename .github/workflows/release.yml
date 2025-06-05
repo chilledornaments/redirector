@@ -1,4 +1,4 @@
-name: Release
+name: Redirector Release
 on:
   release:
     types: [published]
