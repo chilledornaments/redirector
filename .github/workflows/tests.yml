@@ -121,6 +121,14 @@ jobs:
           kubectl -n ${{steps.generate.outputs.kube_namespace}} describe deploy
           echo "::endgroup::"
           
+          echo "::group::Redirector pods"
+          kubectl -n ${{steps.generate.outputs.kube_namespace}} describe pods
+          echo "::endgroup::"
+          
+          echo "::group::Redirector service"
+          kubectl -n ${{steps.generate.outputs.kube_namespace}} describe svc
+          echo "::endgroup::"
+          
           echo "::group::NGINX logs"
           kubectl -n ingress-nginx logs deploy/ingress-nginx-controller
           echo "::endgroup::"
