@@ -23,15 +23,9 @@ jobs:
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and push image to Docker Hub
-        run: |
-          docker build . \
-          --tag ${{env.CONTAINER_REPOSITORY}}:${{github.sha}} \
-          --tag ${{env.CONTAINER_REPOSITORY}}:${{github.event.release.tag_name}} \
-          --tag ${{env.CONTAINER_REPOSITORY}}:latest
-          
-          for tag in "${{github.sha}}" "${{github.event.release.tag_name}}" "latest"
-          do
-            docker push \
-            ${{env.CONTAINER_REPOSITORY}}:$tag
-          done
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{env.CONTAINER_REPOSITORY}}:latest,${{env.CONTAINER_REPOSITORY}}:${{github.sha}},${{env.CONTAINER_REPOSITORY}}:${{github.event.release.tag_name}}
