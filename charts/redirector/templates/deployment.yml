@@ -46,7 +46,6 @@ spec:
           ports:
             - containerPort: {{ .Values.deploy.port }}
 
-
       resources:
           requests:
             cpu: {{.Values.deploy.resources.requests.cpu}}
