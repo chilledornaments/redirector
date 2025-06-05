@@ -1,5 +1,7 @@
 # Redirector
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/redirector)](https://artifacthub.io/packages/search?repo=redirector)
+
 Redirector is a simple application that handles redirecting requests based on a ruleset. Redirector allows you to manage your redirects declaratively and, additionally, with regular expressions. See the features section for more information.
 
 A few important notes worth mentioning:
