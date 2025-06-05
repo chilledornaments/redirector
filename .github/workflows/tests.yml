@@ -33,13 +33,6 @@ jobs:
         run: |
           go test -v --tags unit_test ./...
 
-      - name: Setup buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build with Docker
-        run: |
-          docker build . --tag ${{env.DOCKER_TAG}}:${{github.sha}}
-
       - name: start minikube
         uses: medyagh/setup-minikube@5e71d7574bcbd0a3b04e7263b9cc4b47e2645bfb
         id: minikube
@@ -54,7 +47,15 @@ jobs:
           extra-config: 'kubelet.max-pods=10'
           feature-gates: 'DownwardAPIHugePages=true'
           wait: false
-          # insecure-registry: 'localhost:5000'
+
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build with Docker
+        run: |
+          docker build . --tag ${{env.DOCKER_TAG}}:${{github.sha}}
+
+          
 
       - name: Setup minikube
         run: |
