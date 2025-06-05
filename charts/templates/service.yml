@@ -1,3 +1,4 @@
+{{ if .Values.service.enabled }}
 kind: Service
 apiVersion: v1
 
@@ -6,11 +7,12 @@ metadata:
   name: redirector
 
 spec:
-  #  externalTrafficPolicy: Cluster
+  type: {{ .Values.service.type }}
   ports:
-    - targetPort: 8484
+    - targetPort: {{ .Values.deploy.port }}
       protocol: TCP
       port: 8484
   selector:
     app: redirector
     {{if .Values.deploy.extraLabels }}{{ toYaml .Values.deploy.extraLabels }}{{end}}
+  {{ end }}
