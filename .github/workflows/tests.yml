@@ -14,7 +14,16 @@ env:
 
 jobs:
   unit-tests:
-    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        arch:
+          - amd64
+          - arm64
+    env:
+      GOARCH: ${{ matrix.arch }}
+
+    runs-on: ${{ matrix.arch == 'amd64' && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
 
     steps:
       - name: Checkout
@@ -26,10 +35,13 @@ jobs:
           go-version: '^1.24'
 
       - name: Vet
+        env:
+          CGO_ENABLED: 1
         run: |
-          go vet -race
+          go vet
 
       - name: Unit tests
+
         run: |
           go test -v --tags unit_test ./...
 

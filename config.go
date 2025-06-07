@@ -20,8 +20,8 @@ import (
 const (
 	defaultStatusCode                 = http.StatusMovedPermanently
 	defaultParameterStrategy          = ParamsStrategyCombine
-	defaultListenAddress              = "0.0.0.1:8484"
-	defaultMetricsServerListenAddress = "0.0.0.1:8485"
+	defaultListenAddress              = "0.0.0.0:8484"
+	defaultMetricsServerListenAddress = "0.0.0.0:8485"
 	defaultCacheTTL                   = 86400
 	defaultCacheCleanupInterval       = 3600
 	defaultLocationOnMiss             = ""

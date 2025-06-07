@@ -16,7 +16,7 @@ deploy:
     limits:
       cpu: '100M'
       memory: '100M'
-  image: 'chilledornaments/redirector:latest'
+  image: 'ghcr.io/chilledornaments/redirector:latest'
   imagePullPolicy: IfNotPresent
   port: 8484
   extraLabels: {}
