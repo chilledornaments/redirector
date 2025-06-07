@@ -6,6 +6,9 @@ metadata:
   name: {{ .Values.config.configMapName }}
   namespace: {{ .Release.Namespace }}
 
+  labels:
+    app: redirector
+
 data:
   config.yml: |
     {{ b64dec .Values.config.encodedFileContents | nindent 4 }}
