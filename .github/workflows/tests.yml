@@ -8,6 +8,7 @@ on:
       - '*.go'
       - './fixtures/**'
       - .github/workflows/tests.yml
+      - '/go.*'
 
 env:
   CONTAINER_REPOSITORY: ghcr.io/chilledornaments/redirector
